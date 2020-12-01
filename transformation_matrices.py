@@ -48,51 +48,44 @@ def scale(n):
         [0, 0, 0, 1]
     ])
 
-class Translate:
-    def __init__(self, vertexes, matrx, tx, ty, tz, tr):
-        self.vertexes = vertexes
-        self.matrx = matrx
-        self.tx = tx
-        self.ty = ty
-        self.tz = tz
-        self.tr = np.array([
+class Transformation:
+    def __init__(self):
+        self.ed_matrix = np.eye(4)
+
+    def __call__(self, v_matrix):
+        return v_matrix @ self.matrix
+
+
+class Translate(Transformation):
+    def __init__(self, pos):
+        super().__init__()
+        self.tx, self.ty, self.tz = pos
+        self.matrix = self.ed_matrix @ np.array([
             [1, 0, 0, 0],
             [0, 1, 0, 0],
             [0, 0, 1, 0],
-            [tx, ty, tz, 1]
+            [self.tx, self.ty, self.tz, 1]
         ])
 
-    def __call__(self, pos):
-        self.tx, self.ty, self.tz = pos
-        vertexes = self.matrx @ self.tr
-        return vertexes
 
 
-class Rotate_x:
-    def __init__(self, vertexes, matrx, a, rt):
-        self.vertexes = vertexes
-        self.matrx = matrx
+class Rotate_x(Transformation):
+    def __init__(self, a):
+        super().__init__()
         self.a = a
-        self.rt = np.array([
+        self.matrix = self.ed_matrix @ np.array([
             [math.cos(a), math.sin(a), 0, 0],
             [-math.sin(a), math.cos(a), 0, 0],
             [0, 0, 1, 0],
             [0, 0, 0, 1]
         ])
-    def __call__(self, al):
-        self.a = al
-
-        global matrx
 
 
-
-class Rotate_y:
-    def __init__(self, matrx):
-        self.matrx = matrx
-
-    def __call__(self, a):
-        global matrx
-        matrx = self.matrx @ np.array([
+class Rotate_y(Transformation):
+    def __init__(self, a):
+        super().__init__()
+        self.a = a
+        self.matrix = self.ed_matrix @ np.array([
             [math.cos(a), 0, -math.sin(a), 0],
             [0, 1, 0, 0],
             [math.sin(a), 0, math.cos(a), 0],
@@ -100,13 +93,11 @@ class Rotate_y:
         ])
 
 
-class Rotate_z:
-    def __init__(self, matrx):
-        self.matrx = matrx
-
-    def __call__(self, a):
-        global matrx
-        matrx = self.matrx @ np.array([
+class Rotate_z(Transformation):
+    def __init__(self, a):
+        super().__init__()
+        self.a = a
+        self.matrix = self.ed_matrix @ np.array([
             [math.cos(a), math.sin(a), 0, 0],
             [-math.sin(a), math.cos(a), 0, 0],
             [0, 0, 1, 0],
@@ -114,16 +105,21 @@ class Rotate_z:
         ])
 
 
-class Scale:
-    def __init__(self, matrx):
-        self.matrx = matrx
-
-    def __call__(self, n):
-        global matrx
-        matrx = self.matrx @ np.array([
+class Scale(Transformation):
+    def __init__(self, n):
+        super().__init__()
+        self.n = n
+        self.matrix = self.ed_matrix @ np.array([
             [n, 0, 0, 0],
             [0, n, 0, 0],
             [0, 0, n, 0],
             [0, 0, 0, 1]
         ])
 
+
+r = np.array([(0, 0, 0, 1), (0, 1, 0, 1), (1, 1, 0, 1), (1, 0, 0, 1),
+              (0, 0, 1, 1), (0, 1, 1, 1), (1, 1, 1, 1), (1, 0, 1, 1)])
+
+s = Rotate_z(3)
+b = s(r)
+print(b)
