@@ -1,4 +1,3 @@
-import math
 import numpy as np
 
 
@@ -27,9 +26,9 @@ class Rotate_x(Transformation):
         super().__init__()
         self.a = a
         self.matrix = self.ed_matrix @ np.array([
-            [math.cos(a), math.sin(a), 0, 0],
-            [-math.sin(a), math.cos(a), 0, 0],
-            [0, 0, 1, 0],
+            [1, 0, 0, 0],
+            [0, np.cos(a), np.sin(a), 0],
+            [0, -np.sin(a), np.cos(a), 0],
             [0, 0, 0, 1]
         ])
 
@@ -39,9 +38,9 @@ class Rotate_y(Transformation):
         super().__init__()
         self.a = a
         self.matrix = self.ed_matrix @ np.array([
-            [math.cos(a), 0, -math.sin(a), 0],
+            [np.cos(a), 0, -np.sin(a), 0],
             [0, 1, 0, 0],
-            [math.sin(a), 0, math.cos(a), 0],
+            [np.sin(a), 0, np.cos(a), 0],
             [0, 0, 0, 1]
         ])
 
@@ -51,8 +50,8 @@ class Rotate_z(Transformation):
         super().__init__()
         self.a = a
         self.matrix = self.ed_matrix @ np.array([
-            [math.cos(a), math.sin(a), 0, 0],
-            [-math.sin(a), math.cos(a), 0, 0],
+            [np.cos(a), np.sin(a), 0, 0],
+            [-np.sin(a), np.cos(a), 0, 0],
             [0, 0, 1, 0],
             [0, 0, 0, 1]
         ])
@@ -68,7 +67,6 @@ class Scale(Transformation):
             [0, 0, n, 0],
             [0, 0, 0, 1]
         ])
-
 
 # # пример
 # r = np.array([(0, 0, 0, 1), (0, 1, 0, 1), (1, 1, 0, 1), (1, 0, 0, 1),
