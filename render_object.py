@@ -33,23 +33,23 @@ class Object3D:
             polygon = vertexes[face]
             pg.draw.polygon(self.render.screen, pg.Color('red'), polygon, 3)
 
-        # подсвечивает точки фигур
+        # вершины точки фигур
         for vertex in vertexes:
-            #FIXME жуткий костыль, который сожрет всю память(почему то выдает флоат)
+            # FIXME жуткий костыль, который сожрет всю память(почему то выдает флоат)
             vertex = [int(i) for i in vertex]
             pg.draw.circle(self.render.screen, pg.Color('white'), vertex, 6)
 
-    def translate(self, pos):
-        self.vertexes = self.vertexes @ tm.translate(pos)
-
-    def scale(self, scale_to):
-        self.vertexes = self.vertexes @ tm.scale(scale_to)
-
-    def rotate_x(self, angle):
-        self.vertexes = self.vertexes @ tm.rotate_x(angle)
-
-    def rotate_y(self, angle):
-        self.vertexes = self.vertexes @ tm.rotate_y(angle)
-
-    def rotate_z(self, angle):
-        self.vertexes = self.vertexes @ tm.rotate_z(angle)
+    # def translate(self, pos):
+    #     self.vertexes = self.vertexes @ tm.translate(pos)
+    #
+    # def scale(self, scale_to):
+    #     self.vertexes = self.vertexes @ tm.scale(scale_to)
+    #
+    # def rotate_x(self, angle):
+    #     self.vertexes = self.vertexes @ tm.rotate_x(angle)
+    #
+    # def rotate_y(self, angle):
+    #     self.vertexes = self.vertexes @ tm.rotate_y(angle)
+    #
+    # def rotate_z(self, angle):
+    #     self.vertexes = self.vertexes @ tm.rotate_z(angle)

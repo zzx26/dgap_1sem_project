@@ -7,7 +7,7 @@ class Projection:
         far = render.camera.far_plane
         right = np.tan(render.camera.h_fov / 2)
         left = -right
-        top = np.tan(render.camera.v_fov)
+        top = np.tan(render.camera.v_fov / 2)
         bottom = -top
 
         a00 = 2 / (right - left)

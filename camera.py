@@ -14,6 +14,55 @@ class Camera:
         self.v_fov = self.h_fov * (render.height / render.width)
         self.near_plane = 0.1
         self.far_plane = 100
+        self.moving_speed = 0.02
+        self.rotation_speed = 0.01
+        self.yaw_positive_matrix = tm.Rotate_y(self.rotation_speed)
+        self.yaw_negative_matrix = tm.Rotate_y(-self.rotation_speed)
+        self.pitch_positive_matrix = tm.Rotate_x(self.rotation_speed)
+        self.pitch_negative_matrix = tm.Rotate_x(-self.rotation_speed)
+
+    def control(self):
+        key = pg.key.get_pressed()
+        if key[pg.K_w]:
+            self.position += self.forward * self.moving_speed
+        if key[pg.K_a]:
+            self.position -= self.right * self.moving_speed
+        if key[pg.K_s]:
+            self.position -= self.forward * self.moving_speed
+        if key[pg.K_d]:
+            self.position += self.right * self.moving_speed
+        if key[pg.K_q]:
+            self.position += self.up * self.moving_speed
+        if key[pg.K_e]:
+            self.position -= self.up * self.moving_speed
+        if key[pg.K_j]:
+            self.camera_yaw_negative()
+        if key[pg.K_l]:
+            self.camera_yaw_positive()
+        if key[pg.K_i]:
+            self.camera_pitch_negative()
+        if key[pg.K_k]:
+            self.camera_pitch_positive()
+
+    def camera_yaw_positive(self):
+        self.forward = self.yaw_positive_matrix(self.forward)
+        self.right = self.yaw_positive_matrix(self.right)
+        self.up = self.yaw_positive_matrix(self.up)
+
+    def camera_yaw_negative(self):
+        self.forward = self.yaw_negative_matrix(self.forward)
+        self.right = self.yaw_negative_matrix(self.right)
+        self.up = self.yaw_negative_matrix(self.up)
+
+    def camera_pitch_positive(self):
+        self.forward = self.pitch_positive_matrix(self.forward)
+        self.right = self.pitch_positive_matrix(self.right)
+        self.up = self.pitch_positive_matrix(self.up)
+
+    def camera_pitch_negative(self):
+        self.forward = self.pitch_negative_matrix(self.forward)
+        self.right = self.pitch_negative_matrix(self.right)
+        self.up = self.pitch_negative_matrix(self.up)
 
     def translate_matrix(self):
         """переход в систему координат камеры"""
