@@ -33,7 +33,7 @@ class SoftwareRender:
     def create_objects(self):
         self.camera = c.Camera(self, [0.5, 1.5, -2])
         self.projection = p.Projection(self)
-        self.object = ro.Object3D(self)
+        self.object = ro.Object3D(self, camera=self.camera)
 
 
 if __name__ == '__main__':

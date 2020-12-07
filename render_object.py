@@ -4,15 +4,33 @@ import transformation_matrices as tm
 
 
 class Object3D:
-    def __init__(self, render):
+    """
+    vertexes - вершины, faces - грани, middles - середины граней
+
+    """
+
+    def __init__(self, render, camera):
+        self.camera = camera
         self.render = render
         # вершины
         # FIXME принять во внимание формат записи даннных при написании ассет креатора
         self.vertexes = np.array([(0, 0, 0, 1), (0, 1, 0, 1), (1, 1, 0, 1), (1, 0, 0, 1),
                                   (0, 0, 1, 1), (0, 1, 1, 1), (1, 1, 1, 1), (1, 0, 1, 1)])
         # грани; числа в кортежах - индексы элементов предыдущей переменной
-        # FIXME придумать, как перегнать грани в покрашенные полигоны при отрисовке
         self.faces = np.array([(0, 1, 2, 3), (4, 5, 6, 7), (0, 4, 5, 1), (2, 3, 7, 6), (1, 2, 6, 5), (0, 3, 7, 4)])
+        self.middles = np.array([np.ones(4) for i in range(len(self.faces))])
+        for i in range(len(self.faces)):
+            coord = 0
+            for j in range(len(self.faces[i])):
+                coord += self.vertexes[self.faces[i, j]] / (len(self.faces[i]))
+            self.middles[i] = coord
+        self.order = np.ones(len(self.faces))
+
+    def get_render_order(self):
+        cam_coords = np.tile(self.camera.position, (len(self.middles), 1))
+        distances = self.middles - cam_coords
+        distances = np.sqrt((distances * distances).sum(axis=1))
+        return np.argsort(-distances)
 
     def draw(self):
         self.screen_projection()
@@ -29,8 +47,9 @@ class Object3D:
         vertexes = vertexes @ self.render.projection.to_screen_matrix
         vertexes = vertexes[:, :2]
         # FIXME здесь будет все веселье с отрисовкой
-        for face in self.faces:
-            polygon = vertexes[face]
+        render_order = self.get_render_order()
+        for i in range(len(render_order)):
+            polygon = vertexes[self.faces[render_order[i]]]
             pg.draw.polygon(self.render.screen, pg.Color('red'), polygon, 3)
 
         # вершины точки фигур
