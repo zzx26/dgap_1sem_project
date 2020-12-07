@@ -44,12 +44,15 @@ class Object3D:
         # предроложительно надо добавить штуку, которая будет маркировать полигоны, которые полностью вне поля зрения
         # чтобы можно было их далее не отрисовывать(например заменить координату на стринг)
         # vertexes[(vertexes > 2) | (vertexes < -2)] = 0
+        # vertexes[vertexes > 3] = 100
+        # vertexes[vertexes < -3] = -100
         vertexes = vertexes @ self.render.projection.to_screen_matrix
         vertexes = vertexes[:, :2]
         # FIXME здесь будет все веселье с отрисовкой
         render_order = self.get_render_order()
         for i in range(len(render_order)):
             polygon = vertexes[self.faces[render_order[i]]]
+            pg.draw.polygon(self.render.screen, pg.Color('yellow'), polygon)
             pg.draw.polygon(self.render.screen, pg.Color('red'), polygon, 3)
 
         # вершины точки фигур
