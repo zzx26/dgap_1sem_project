@@ -14,8 +14,8 @@ class Camera:
         self.v_fov = self.h_fov * (render.height / render.width)
         self.near_plane = 0.1
         self.far_plane = 100
-        self.moving_speed = 0.02
-        self.rotation_speed = 0.01
+        self.moving_speed = 0.03
+        self.rotation_speed = 0.02
         self.yaw_positive_matrix = tm.Rotate_y(self.rotation_speed)
         self.yaw_negative_matrix = tm.Rotate_y(-self.rotation_speed)
         self.pitch_positive_matrix = tm.Rotate_x(self.rotation_speed)

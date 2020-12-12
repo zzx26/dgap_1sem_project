@@ -37,29 +37,36 @@ class Object3D:
 
     def screen_projection(self):
         vertexes = self.vertexes @ self.render.camera.camera_matrix()
+        vertexes_neg_z = vertexes
         vertexes = vertexes @ self.render.projection.projection_matrix
         # нормируем координаты
         vertexes /= vertexes[:, -1].reshape(-1, 1)
         # эта строчка удаляет вершины вне pov, возможно буду проблемы с полигонами
         # предроложительно надо добавить штуку, которая будет маркировать полигоны, которые полностью вне поля зрения
         # чтобы можно было их дал  ее не отрисовывать(например заменить координату на стринг)
-        # vertexes[(vertexes > 2) | (vertexes < -2)] = 0
-        # vertexes[vertexes > 3] = 100
-        # vertexes[vertexes < -3] = -100
+        vertexes[(vertexes > 2) | (vertexes < -2)] = 100
+        # преобразуем в координаты экрана
+        vertexes_screen_check = vertexes
         vertexes = vertexes @ self.render.projection.to_screen_matrix
+        # отсекаем z, w
         vertexes = vertexes[:, :2]
         # FIXME здесь будет все веселье с отрисовкой
         render_order = self.get_render_order()
+
         for i in range(len(render_order)):
+            print(vertexes_neg_z[self.faces[render_order[i]]].reshape(-1)[2::4])
+            if 100 in vertexes_screen_check[self.faces[render_order[i]]]:
+                continue
+            if (vertexes_neg_z[self.faces[render_order[i]]].reshape(-1)[2::4] < 0).any():
+                print('t')
+                continue
             polygon = vertexes[self.faces[render_order[i]]]
             pg.draw.polygon(self.render.screen, pg.Color('yellow'), polygon)
             pg.draw.polygon(self.render.screen, pg.Color('red'), polygon, 3)
 
         # вершины точки фигур
         for vertex in vertexes:
-            # FIXME жуткий костыль, который сожрет всю память(почему то выдает флоат)
-            vertex = [int(i) for i in vertex]
-            pg.draw.circle(self.render.screen, pg.Color('white'), vertex, 6)
+            pg.draw.circle(self.render.screen, pg.Color('white'), vertex.astype(int), 6)
 
     # def translate(self, pos):
     #     self.vertexes = self.vertexes @ tm.translate(pos)
