@@ -1,6 +1,12 @@
 import numpy as np
 import pygame as pg
 import transformation_matrices as tm
+from numba import njit
+
+
+@njit(fastmath=True)
+def any_func(arr, a, b):
+    return np.any((arr == a) | (arr == b))
 
 
 class Object3D:
@@ -9,15 +15,16 @@ class Object3D:
 
     """
 
-    def __init__(self, render, camera):
-        self.camera = camera
+    def __init__(self, render, camera, vertexes='', faces=''):
         self.render = render
+        self.camera = camera
+        self.vertexes = vertexes
+        self.faces = faces
         # вершины
         # FIXME принять во внимание формат записи даннных при написании ассет креатора
-        self.vertexes = np.array([(0, 0, 0, 1), (0, 1, 0, 1), (1, 1, 0, 1), (1, 0, 0, 1),
-                                  (0, 0, 1, 1), (0, 1, 1, 1), (1, 1, 1, 1), (1, 0, 1, 1)])
+        self.vertexes = np.array([np.array(v) for v in vertexes])
         # грани; числа в кортежах - индексы элементов предыдущей переменной
-        self.faces = np.array([(0, 1, 2, 3), (4, 5, 6, 7), (0, 4, 5, 1), (2, 3, 7, 6), (1, 2, 6, 5), (0, 3, 7, 4)])
+        self.faces = np.array([np.array(face) for face in faces])
         self.middles = np.array([np.ones(4) for i in range(len(self.faces))])
         for i in range(len(self.faces)):
             coord = 0
@@ -61,12 +68,8 @@ class Object3D:
                 print('t')
                 continue
             polygon = vertexes[self.faces[render_order[i]]]
-            pg.draw.polygon(self.render.screen, pg.Color('yellow'), polygon)
-            pg.draw.polygon(self.render.screen, pg.Color('red'), polygon, 3)
-
-        # вершины точки фигур
-        for vertex in vertexes:
-            pg.draw.circle(self.render.screen, pg.Color('white'), vertex.astype(int), 6)
+            pg.draw.polygon(self.render.screen, pg.Color('dark grey'), polygon)
+            pg.draw.polygon(self.render.screen, pg.Color('dark red'), polygon, 3)
 
     # def translate(self, pos):
     #     self.vertexes = self.vertexes @ tm.translate(pos)

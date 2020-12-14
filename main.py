@@ -1,41 +1,57 @@
 import pygame as pg
-import render_object as ro
-import camera as c
-import projection as p
+import asset_creator as ac
+import button as but
+from tkinter.filedialog import *
 
 
 class SoftwareRender:
     def __init__(self):
         pg.init()
-        self.resolution = self.width, self.height = 800, 600
-        self.h_width, self.h_height = self.width // 2, self.height // 2
-        self.FPS = 25
-        self.screen = pg.display.set_mode(self.resolution)
+        self.window_width = 1000
+        self.window_height = 700
+        self.screen = pg.display.set_mode((self.window_width, self.window_height))
+        self.FPS = 30
         self.clock = pg.time.Clock()
-        self.create_objects()
+        self.red = (255, 0, 0)
+        self.black = (0, 0, 0)
+        self.white = (255, 255, 255)
+        self.open_button = but.Button(self.screen, self.window_width // 2 - 50, self.window_height // 2,
+                                      self.open_file_dialog, text="Open file",
+                                      width=120,
+                                      height=40, hover_color=self.white, clicked_color=self.white)
 
-    def draw(self):
-        """method that will create an actual image"""
-        self.screen.fill(pg.Color('cyan'))
-        self.object.draw()
+    def open_file_dialog(self):
+        """Открывает диалоговое окно выбора имени файла и вызывает
+        функцию считывания параметров системы небесных тел из данного файла.
+        Считанные объекты сохраняются в глобальный список space_objects
+        """
+        in_filename = askopenfilename(filetypes=(("Text file", ".obj"),))
+        a = ac.Soft(in_filename)
+        a.run()
+
+    def draw_interface(self):
+        pg.draw.rect(self.screen, self.red, ([0, self.window_height - 100], [self.window_width, self.window_height]))
+        self.open_button.draw()
 
     def run(self):
-        """working cycle of the game"""
+        """Главная функция главного модуля.
+        """
+
+        print('Modelling started!')
+        pg.display.set_caption("3D Visualization")
+        clock = pg.time.Clock()
+        pg.display.update()
+
         while True:
-            self.draw()
-            self.camera.control()
-            [exit() for i in pg.event.get() if i.type == pg.QUIT]
-            current_fps = 'Current FPS: ' + str(self.clock.get_fps())
-            pg.display.set_caption(current_fps)
-            pg.display.flip()
-            self.clock.tick(self.FPS)
-
-    def create_objects(self):
-        self.camera = c.Camera(self, [0.5, 1.5, -2])
-        self.projection = p.Projection(self)
-        self.object = ro.Object3D(self, camera=self.camera)
+            clock.tick(self.FPS)
+            for event in pg.event.get():
+                self.open_button.handle_event(event)
+                if event.type == pg.QUIT:
+                    exit()
+            self.draw_interface()
+            pg.display.update()
+            self.screen.fill(self.black)
 
 
-if __name__ == '__main__':
-    app = SoftwareRender()
-    app.run()
+app = SoftwareRender()
+app.run()
