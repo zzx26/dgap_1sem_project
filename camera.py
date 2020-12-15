@@ -16,10 +16,10 @@ class Camera:
         self.far_plane = 100
         self.moving_speed = 10
         self.rotation_speed = 0.02
-        self.yaw_positive_matrix = tm.Rotate_y(self.rotation_speed)
-        self.yaw_negative_matrix = tm.Rotate_y(-self.rotation_speed)
-        self.pitch_positive_matrix = tm.Rotate_x(self.rotation_speed)
-        self.pitch_negative_matrix = tm.Rotate_x(-self.rotation_speed)
+        self.yaw_positive_matrix = tm.RotateY(self.rotation_speed)
+        self.yaw_negative_matrix = tm.RotateY(-self.rotation_speed)
+        self.pitch_positive_matrix = tm.RotateX(self.rotation_speed)
+        self.pitch_negative_matrix = tm.RotateX(-self.rotation_speed)
 
     def control(self):
         key = pg.key.get_pressed()

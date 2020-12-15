@@ -1,7 +1,7 @@
 import pygame as pg
 import asset_creator as ac
 import button as but
-from tkinter.filedialog import *
+import tkinter.filedialog as dia
 
 
 class SoftwareRender:
@@ -21,11 +21,10 @@ class SoftwareRender:
                                       height=40, hover_color=self.white, clicked_color=self.white)
 
     def open_file_dialog(self):
-        """Открывает диалоговое окно выбора имени файла и вызывает
-        функцию считывания параметров системы небесных тел из данного файла.
-        Считанные объекты сохраняются в глобальный список space_objects
         """
-        in_filename = askopenfilename(filetypes=(("Text file", ".obj"),))
+        Открывает диалоговое окно выбора имени файла
+        """
+        in_filename = dia.askopenfilename(filetypes=(("Text file", ".obj"),))
         a = ac.Soft(in_filename)
         a.run()
 
@@ -34,10 +33,10 @@ class SoftwareRender:
         self.open_button.draw()
 
     def run(self):
-        """Главная функция главного модуля.
         """
-
-        print('Modelling started!')
+        Главная функция главного модуля.
+        """
+        print('Engine running')
         pg.display.set_caption("3D Visualization")
         clock = pg.time.Clock()
         pg.display.update()

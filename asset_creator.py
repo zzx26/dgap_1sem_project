@@ -16,16 +16,16 @@ class Soft:
         self.black = (0, 0, 0)
         self.white = (255, 255, 255)
         self.screen = pg.display.set_mode(self.resolution)
-        self.stop_programm = False
+        self.stop_program = False
         self.clock = pg.time.Clock()
         self.create_objects()
         self.close_button = but.Button(self.screen, self.width // 2 + 100, self.height // 2 + 200,
-                                       self.close_prodramm, text="Close",
+                                       self.close_program, text="Close",
                                        width=120,
                                        height=40, hover_color=self.white, clicked_color=self.red)
 
-    def close_prodramm(self):
-        self.stop_programm = True
+    def close_program(self):
+        self.stop_program = True
 
     def draw(self):
         """method that will create an actual image"""
@@ -64,13 +64,10 @@ class Soft:
             pg.display.flip()
             self.clock.tick(self.FPS)
 
-            if self.stop_programm:
+            if self.stop_program:
                 break
+
 
 if __name__ == '__main__':
     ap = Soft()
     ap.run()
-# Нужен ткинтеровский интерфейс, где будут создаваться ассеты
-# (плюс алгоритмы маркировки граней и вершин и запихивание всего этого в нужный формат)
-# , само изображение будет выводиться на движке в соседнем окне
-# также нужно подрубить редактирование файловЮ где вся эта вакханалия будет хранится

@@ -21,7 +21,7 @@ class Translate(Transformation):
         ])
 
 
-class Rotate_x(Transformation):
+class RotateX(Transformation):
     def __init__(self, a):
         super().__init__()
         self.a = a
@@ -33,7 +33,7 @@ class Rotate_x(Transformation):
         ])
 
 
-class Rotate_y(Transformation):
+class RotateY(Transformation):
     def __init__(self, a):
         super().__init__()
         self.a = a
@@ -45,7 +45,7 @@ class Rotate_y(Transformation):
         ])
 
 
-class Rotate_z(Transformation):
+class RotateZ(Transformation):
     def __init__(self, a):
         super().__init__()
         self.a = a
@@ -67,11 +67,3 @@ class Scale(Transformation):
             [0, 0, n, 0],
             [0, 0, 0, 1]
         ])
-
-# # пример
-# r = np.array([(0, 0, 0, 1), (0, 1, 0, 1), (1, 1, 0, 1), (1, 0, 0, 1),
-#               (0, 0, 1, 1), (0, 1, 1, 1), (1, 1, 1, 1), (1, 0, 1, 1)])
-#
-# s = Rotate_z(3)
-# b = s(r)
-# print(b)
