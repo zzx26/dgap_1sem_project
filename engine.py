@@ -69,5 +69,5 @@ class Soft:
 
 
 if __name__ == '__main__':
-    ap = Soft()
-    ap.run()
+    eng = Soft()
+    eng.run()

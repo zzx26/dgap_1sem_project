@@ -14,7 +14,7 @@ class Camera:
         self.v_fov = self.h_fov * (render.height / render.width)
         self.near_plane = 0.1
         self.far_plane = 100
-        self.moving_speed = 10
+        self.moving_speed = 20
         self.rotation_speed = 0.02
         self.yaw_positive_matrix = tm.RotateY(self.rotation_speed)
         self.yaw_negative_matrix = tm.RotateY(-self.rotation_speed)
@@ -22,6 +22,9 @@ class Camera:
         self.pitch_negative_matrix = tm.RotateX(-self.rotation_speed)
 
     def control(self):
+        """
+        Controls: WASD movement, IJKL - camera, QE - altitude
+        """
         key = pg.key.get_pressed()
         if key[pg.K_w]:
             self.position += self.forward * self.moving_speed

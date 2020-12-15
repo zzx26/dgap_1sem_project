@@ -12,7 +12,6 @@ class Object3D:
     """
     vertexes - вершины, faces - грани, middles - середины граней
     """
-
     def __init__(self, render, camera, vertexes='', faces=''):
         self.render = render
         self.camera = camera

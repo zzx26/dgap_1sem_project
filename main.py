@@ -1,5 +1,5 @@
 import pygame as pg
-import asset_creator as ac
+import engine as en
 import button as but
 import tkinter.filedialog as dia
 
@@ -25,7 +25,7 @@ class SoftwareRender:
         Открывает диалоговое окно выбора имени файла
         """
         in_filename = dia.askopenfilename(filetypes=(("Text file", ".obj"),))
-        a = ac.Soft(in_filename)
+        a = en.Soft(in_filename)
         a.run()
 
     def draw_interface(self):
